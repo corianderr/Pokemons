@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/v5.11.1/css/free.min.css" media="all">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title></title>
+</head>
+<body>
+    <div class="container">
+        <h3 style="text-align: center;">Pokemons</h3>
+        <table class="table">
+            <thead>
+              <tr>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Height</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">One of abilities</th>
+                </tr>
+              </tr>
+            </thead>
+            <tbody id="pokemons">
+            </tbody>
+          </table>
+          <br><button type="button" class="btn btn-warning quote-btn">Generate quote from 'Stranger things'</button><br><br>
+          <div id="quote"></div><br>
+    </div>
+      <script>
+          $.get('https://pokeapi.co/api/v2/pokemon', function(data){
+          console.log(data);
+          var pokemons = data;
+          data.results.forEach(element => {
+            $.get(element.url, function(data){
+                console.log(data);
+                var pokemon = data;
+                $('#pokemons').append('<tr> <td>' + pokemon.name + '</td><td>' + pokemon.height + '</td><td>' + pokemon.weight + '</td><td>' + pokemon.abilities[0].ability.name + '</td></tr>');
+            })
+          });
+        })
+        var quote = $('.quote-btn');
+        quote.on('click', function() {
+            $.get('https://strangerthings-quotes.herokuapp.com/v1/quotes', function(data){
+            console.log(data[0]);
+            $('#quote').html('<div class="card"><div class="card-header">Quote</div><div class="card-body"><blockquote class="blockquote mb-0"><p>' + data[0].quote + '</p><footer class="blockquote-footer">' + data[0].author + '</footer></blockquote></div></div>');
+        })
+        });
+        </script>
+</body>
+</html>
